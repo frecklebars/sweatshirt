@@ -7,13 +7,17 @@ def main():
     dictionaryFile, length = readArguments()
     dictionary = loadDictionary(dictionaryFile)
     
-    lastWord = "~~~~~~~~~~~" #weird word that doesnt exist
+    lastWords = "~~~~~~ ~~~~~" #weird word that doesnt exist
     generatedText = ""
     
     for i in range(length):
-        word = generateWord(lastWord, dictionary)
+        word, status = generateWord(lastWords, dictionary)
+        #status is 1 if only one word needs replacing or 2 if both (ex. first time you need to replace both ~~~~~s)
         generatedText = generatedText + " " + word
-        lastWord = word
+        if status == 1:
+            lastWords = lastWords.split()[1] + " " + word
+        if status == 2:
+            lastWords = word
         
     print(generatedText)
     
@@ -45,19 +49,19 @@ def loadDictionary(dfile):
     
     return dictionary
 
-def generateWord(lastWord, dictionary):
-    if lastWord in dictionary:
+def generateWord(lastWords, dictionary):
+    if lastWords in dictionary:
         #pick random from its dictionary entries
-        newDict = dictionary[lastWord]
-        return random.choice(list(newDict.keys()))
+        newDict = dictionary[lastWords]
+        return random.choice(list(newDict.keys())), 1 #TO DO - actually pick based on count not just randomly
     else:
         #pick a new word randomly
+        print("[debug]: rand!"+lastWords)
         word = getRandWord(dictionary)
-        return word
+        return word, 2
 
 def getRandWord(dictionary):
-    randNum = random.randint(0, len(dictionary)-1)
-    word = list(dictionary.keys())[randNum]
+    word = random.choice(list(dictionary.keys()))
     
     return word
 

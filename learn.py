@@ -56,22 +56,28 @@ def loadDictionary(dfile):
     return dictionary
 
 def learn(dictionary, rawInput):
-    #splitting the read strings in words
-    rawInput = rawInput.replace("\n\n", "\n")
-    rawInput = rawInput.replace("\n", " ")
+    
+    rawInput = inputOptimize(rawInput)
+    
     words = rawInput.split(" ")
-    for i in range(len(words)-1):
+    
+    for i in range(len(words)-2):
         currentWord = words[i]
-        nextWord = words[i + 1]
+        secondWord = words[i + 1]
+        nextWord = words[i + 2]
+        
+        #making the dict entry two words for better idk whats it called
+        #natural-er sounder sentences?
+        wordEntry = currentWord + " " + secondWord
         
         #checking if the current and next words are in the dictionary already
-        if currentWord in dictionary:
-            if nextWord in dictionary[currentWord]:
-                dictionary[currentWord][nextWord] = dictionary[currentWord][nextWord] + 1
+        if wordEntry in dictionary:
+            if nextWord in dictionary[wordEntry]:
+                dictionary[wordEntry][nextWord] = dictionary[wordEntry][nextWord] + 1
             else:
-                dictionary[currentWord][nextWord] = 1
+                dictionary[wordEntry][nextWord] = 1
         else:
-            dictionary[currentWord] = {nextWord: 1}
+            dictionary[wordEntry] = {nextWord: 1}
     
     return dictionary
 
@@ -80,4 +86,27 @@ def dumpDictionary(dfile, dictionary):
     json.dump(dictionary, file)
     file.close()
 
+def inputOptimize(raw):
+    #makes the input text nicer so "father" and "father," aren't two different words
+    #and crap like that
+    raw = raw.lower()
+    raw = raw.replace("\n\n", "\n")
+    raw = raw.replace("\n", " ")
+    raw = raw.replace("\"", "")
+    raw = raw.replace("\\", "")
+    raw = raw.replace(",", "")
+    raw = raw.replace(".", "")
+    raw = raw.replace("(", "")
+    raw = raw.replace(")", "")
+    
+    return raw
+
 main()
+
+
+
+
+
+
+
+

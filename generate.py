@@ -43,7 +43,7 @@ def loadDictionary(dfile):
         exit("no dictionary found")
         
     #read the existing dictionary
-    file = open(dfile, "r")
+    file = open(dfile, "r", encoding="utf-8")
     dictionary = json.load(file)
     file.close()
     

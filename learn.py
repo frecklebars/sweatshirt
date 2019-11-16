@@ -7,9 +7,8 @@ def main():
     dictionary = loadDictionary(dictionaryFile)
     
     if inputFile:
-        print("NOTICE: reading from file is still work in progress\nunexpected or unwanted results may occur")
         #read data from file
-        file = open(inputFile, "r")
+        file = open(inputFile, "r", encoding="utf-8")
         rawInput = file.read()
         dictionary = learn(dictionary, rawInput)
         dumpDictionary(dictionaryFile, dictionary)
@@ -44,12 +43,12 @@ def loadDictionary(dfile):
     #checking if the dictionary exists
     if not os.path.exists(dfile):
         #if it doesnt we just make one
-        file = open(dfile, "w")
+        file = open(dfile, "w", encoding="utf-8")
         json.dump({}, file)
         file.close()
         
     #read the existing dictionary
-    file = open(dfile, "r")
+    file = open(dfile, "r", encoding="utf-8")
     dictionary = json.load(file)
     file.close()
     
@@ -82,7 +81,7 @@ def learn(dictionary, rawInput):
     return dictionary
 
 def dumpDictionary(dfile, dictionary):
-    file = open(dfile, "w")
+    file = open(dfile, "w", encoding="utf-8")
     json.dump(dictionary, file)
     file.close()
 

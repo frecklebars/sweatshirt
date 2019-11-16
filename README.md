@@ -10,7 +10,7 @@ the scraper is made using [this](https://github.com/johnwmillr/LyricsGenius) so 
 * ~~actually build a song database (will use a genius ripper i found)~~
 * make picking random words not really random but based on frequency
 * ~~make the dictionary store two words instead of one for better results~~
-* ~~handle special characters better~~ eh still could do better
+* ~~handle formatting better~~ eh still could do better
 * think of how bars lenght should be done
 * ???
 * sleep

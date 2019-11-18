@@ -1,4 +1,4 @@
-## “To my son Thebe whose growth and insights inspire me, a thousand kisses”
+## “To my son Thebe, whose growth and insights inspire me, a thousand kisses”
 tl;dr its a markov chain that makes songs  
 yeah its been done before but hey, I like rap and I'm learning these craps so might as well do it again
 

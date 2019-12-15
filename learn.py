@@ -1,6 +1,7 @@
 import sys
 import json
 import os.path
+import re
 
 def main():
     dictionaryFile, inputFile = readArguments()
@@ -89,14 +90,18 @@ def inputOptimize(raw):
     #makes the input text nicer so "father" and "father," aren't two different words
     #and crap like that
     raw = raw.lower()
+    raw = re.sub('\[.*\]', '', raw) #regex to del everything between [ and ]
     raw = raw.replace("\n\n", "\n")
     raw = raw.replace("\n", " ")
+    raw = raw.replace("  ", " ")
     raw = raw.replace("\"", "")
     raw = raw.replace("\\", "")
     raw = raw.replace(",", "")
     raw = raw.replace(".", "")
     raw = raw.replace("(", "")
     raw = raw.replace(")", "")
+    raw = raw.replace("*", "")
+    raw = raw.replace(":", "")
     
     return raw
 

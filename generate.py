@@ -4,37 +4,42 @@ import os.path
 import random
 
 def main():
-    dictionaryFile, length = readArguments()
+    dictionaryFile = readArguments()
     dictionary = loadDictionary(dictionaryFile)
     
-    lastWords = "~~~~~~ ~~~~~" #weird word that doesnt exist
-    generatedText = ""
+    lastWords = "~~~~~~~ ~~~~~" #weird word that doesnt exist
     
-    for i in range(length):
-        word, status = generateWord(lastWords, dictionary)
-        #status is 1 if only one word needs replacing or 2 if both (ex. first time you need to replace both ~~~~~s)
-        generatedText = generatedText + " " + word
-        if status == 1:
-            lastWords = lastWords.split()[1] + " " + word
-        if status == 2:
-            lastWords = word
+    verselines = random.randint(3, 6)
+    for verseline in range(verselines):
+        generatedText = ""
         
-    print(generatedText)
+        length = random.randint(5, 10)
+        
+        for i in range(length):
+            word, status = generateWord(lastWords, dictionary)
+            #status is 1 if only one word needs replacing or 2 if both (ex. first time you need to replace both ~~~~~s)
+            generatedText = generatedText + " " + word
+            if status == 1:
+                try:
+                    lastWords = lastWords.split()[1] + " " + word
+                except:
+                    continue
+            if status == 2:
+                lastWords = word
+            
+        print(generatedText)
     
 def readArguments():
     #defaults
     dictionaryFile = "dictionary.json"
-    length = 10
     
     arguments = len(sys.argv)-1 #getting the number of arguments passed in the command line
     
     #checking for dictionary
     if arguments >= 1:
         dictionaryFile = sys.argv[1]
-    if arguments >= 2:
-        length = int(sys.argv[2])
     
-    return dictionaryFile, length
+    return dictionaryFile
 
 def loadDictionary(dfile):
     #checking if the dictionary exists
@@ -53,17 +58,31 @@ def generateWord(lastWords, dictionary):
     if lastWords in dictionary:
         #pick random from its dictionary entries
         newDict = dictionary[lastWords]
-        return random.choice(list(newDict.keys())), 1 #TO DO - actually pick based on count not just randomly
+        return getNextWord(newDict), 1
     else:
         #pick a new word randomly
-        print("[debug]: rand!"+lastWords)
         word = getRandWord(dictionary)
         return word, 2
 
-def getRandWord(dictionary):
-    word = random.choice(list(dictionary.keys()))
+def getNextWord(dictionary):
+    total = 0
+    for word in dictionary:
+        total = total + dictionary[word]
     
-    return word
+    randpick = random.randint(1, total)
+    currentpick = 0
+    
+    #picking a random word by checking if the random nr we chose
+    #is smaller than the current sum of the word's frequency
+    
+    #idk really how to explain this better honestly
+    for word in dictionary:
+        currentpick = currentpick + dictionary[word]
+        if currentpick >= randpick:
+            return word
+        
+def getRandWord(dictionary):
+    return random.choice(list(dictionary.keys()))
 
 main()
 
